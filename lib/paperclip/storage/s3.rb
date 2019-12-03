@@ -148,23 +148,14 @@ module Paperclip
           end
 
 
-          print "***********************************************************"
-          print @options
-          print "*********************************************************** "
-
-          print "11111111111111111111111111111111 "
+          
           unless @options[:url].to_s.match(/\A:s3.*url\z/) || @options[:url] == ":asset_host".freeze
             @options[:path] = path_option.gsub(/:url/, @options[:url]).sub(/\A:rails_root\/public\/system/, "".freeze)
             @options[:url]  = ":s3_path_url".freeze
           end
-          print "22222222222222222222222222222222 "
           @options[:url] = @options[:url].inspect if @options[:url].is_a?(Symbol)
 
           @http_proxy = @options[:http_proxy] || nil
-
-          print "*********************************************************** "
-          print @options
-          print "***********************************************************"
 
           @use_accelerate_endpoint = @options[:use_accelerate_endpoint]
         end
@@ -387,9 +378,7 @@ module Paperclip
             write_options[:metadata] = @s3_metadata unless @s3_metadata.empty?
             write_options.merge!(@s3_headers)
 
-            print " *** ABOUT TO UPLOAD *** "
             s3_object(style).upload_file(file.path, write_options)
-            print " *** FINISHED UPLOADING ***"
           rescue ::Aws::S3::Errors::NoSuchBucket
             create_bucket
             retry
